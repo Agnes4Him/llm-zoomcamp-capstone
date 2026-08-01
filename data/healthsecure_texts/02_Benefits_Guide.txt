@@ -1,0 +1,20 @@
+HealthSecure Insurance - Benefits Guide
+
+1. Plan Overview (Bronze, Silver, Gold)
+HealthSecure offers three core tiers:
+• Bronze: Lower premiums, higher deductibles ($5,000 deductible, 30% coinsurance).
+• Silver: Balanced coverage ($2,500 deductible, 20% coinsurance).
+• Gold: Comprehensive coverage ($500 deductible, 10% coinsurance).
+
+2. Primary & Specialist Care
+Primary care visits require a $25 copay (Silver/Gold). Specialist care requires a primary care referral for Bronze plans. See 03_Coverage_Policies.pdf for network details.
+
+3. Emergency & Preventive Care
+Emergency care is covered 100% after copay at any facility. Preventive care (annual physicals, vaccinations) is covered with $0 copay across all plans.
+
+4. Diagnostic Imaging & Physiotherapy
+Basic X-rays are covered in-office. MRIs and CT scans require prior authorization (refer to 04_Prior_Authorization_Guide.pdf). Physiotherapy is capped at 20 visits/year for Gold plans.
+
+5. Prescription Drugs & Limits
+Prescriptions are tiered: Generic (Tier 1), Preferred Brand (Tier 2), Non-Preferred (Tier 3), and Specialty (Tier 4). Specialty drugs require prior approval.
+

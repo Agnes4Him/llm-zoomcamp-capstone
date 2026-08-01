@@ -1,0 +1,14 @@
+HealthSecure Insurance - Prior Authorization Guide
+
+1. Understanding Prior Authorization
+Prior Authorization (PA) ensures medical services are necessary and cost-effective before care is delivered.
+
+2. When PA is Required
+Required for: Elective surgeries, outpatient MRIs/CT scans, specialty medications, and extended inpatient stays.
+
+3. Submission & Timelines
+Providers submit PA requests online. Standard review: 3–5 business days. Urgent review: 24–48 hours.
+
+4. Denial Reasons & FAQ
+Common denial grounds: Lack of clinical documentation, alternative treatments not attempted. Decisions can be appealed via 06_Appeals_Guide.pdf.
+

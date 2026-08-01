@@ -1,0 +1,12 @@
+HealthSecure Insurance - Claims Guide
+
+1. How Claims are Submitted
+In-network providers submit claims automatically. For out-of-network care, members submit a CMS-1500 or standard claim form with itemized receipts.
+
+2. Claim Lifecycle & Statuses
+Lifecycle steps: Received -> Pending Review -> Approved/Denied -> Processed.
+Check status online or call support listed in 01_Member_Handbook.pdf.
+
+3. Common Denial Reasons & Processing
+Denials occur due to missing authorization (04_Prior_Authorization_Guide.pdf), non-covered services (03_Coverage_Policies.pdf), or filing after 90 days. Processing takes 14–30 calendar days.
+

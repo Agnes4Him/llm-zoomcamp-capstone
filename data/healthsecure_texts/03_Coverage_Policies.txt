@@ -1,0 +1,15 @@
+HealthSecure Insurance - Coverage Policies
+
+1. Covered vs. Excluded Services
+Covered: Inpatient care, emergency medicine, preventive visits, outpatient surgery. Excluded: Cosmetic surgery, experimental therapies, adult dental/vision unless added via rider.
+
+2. Medical Necessity Rules
+All treatments must meet HealthSecure Medical Necessity Guidelines. Non-necessary procedures will result in claim denials (see 05_Claims_Guide.pdf).
+
+3. Network Rules & Waiting Periods
+In-network providers bill HealthSecure directly. Pre-existing condition waiting periods do not apply to ACA-compliant plans. Annual coverage limits apply as outlined in 02_Benefits_Guide.pdf.
+
+4. Scenarios & Examples
+Scenario A: Emergency Room Visit - Covered under emergency rules regardless of network.
+Scenario B: Elective Surgery - Must be pre-authorized per 04_Prior_Authorization_Guide.pdf.
+
