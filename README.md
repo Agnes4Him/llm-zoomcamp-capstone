@@ -29,3 +29,6 @@ healthsecure-ai/
 ├── .env
 ├── requirements.txt
 └── main.py
+
+## Using Bedrock API key
+export AWS_BEARER_TOKEN_BEDROCK=<BEDROCK_API_KEY>
