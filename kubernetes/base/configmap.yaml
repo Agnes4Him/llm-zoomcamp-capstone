@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: healthsecure-api-config
+
+data:
+  ENVIRONMENT: "staging"
+  LOG_LEVEL: "INFO"
+  OPENAI_CHAT_MODEL: "gpt-4.1-mini"
+  OPENAI_EMBEDDING_MODEL: "text-embedding-3-small"

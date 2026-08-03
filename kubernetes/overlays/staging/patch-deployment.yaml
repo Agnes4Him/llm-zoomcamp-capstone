@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: healthsecure-api
+
+spec:
+  replicas: 2
+
+  template:
+    spec:
+      containers:
+        - name: healthsecure-api
+          image: your-registry/healthsecure-api:v1.0.0

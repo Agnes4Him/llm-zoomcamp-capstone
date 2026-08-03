@@ -1,11 +1,65 @@
-name: Deploy Infrastructure
+name: Build and Publish OCI Artifacts
+
 on:
   workflow_dispatch:
 
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPOSITORY: healthsecure-api
+  MANIFEST_REPOSITORY: healthsecure-manifests
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
-      - name: Echo deployment message
-        run: echo "Deploying infrastructure..."
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t $ECR_REPOSITORY:$IMAGE_TAG .
+
+          docker tag \
+            $ECR_REPOSITORY:$IMAGE_TAG \
+            ${{ secrets.ECR_REGISTRY }}/$ECR_REPOSITORY:$IMAGE_TAG
+
+          docker push \
+            ${{ secrets.ECR_REGISTRY }}/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Install kustomize
+        run: |
+          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          sudo mv kustomize /usr/local/bin/
+
+      - name: Render manifests
+        run: |
+          kustomize build kubernetes/overlays/staging > manifests.yaml
+
+      - name: Install ORAS
+        run: |
+          curl -LO https://github.com/oras-project/oras/releases/latest/download/oras_linux_amd64.tar.gz
+          tar -xzf oras_linux_amd64.tar.gz
+          sudo mv oras /usr/local/bin/
+
+      - name: Push manifests OCI artifact
+        run: |
+          oras push \
+          ${{ secrets.ECR_REGISTRY }}/$MANIFEST_REPOSITORY:${{ github.sha }} \
+          manifests.yaml:application/vnd.cncf.kubernetes.manifest.v1+yaml

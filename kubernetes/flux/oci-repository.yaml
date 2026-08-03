@@ -1,0 +1,14 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+
+metadata:
+  name: healthsecure-manifests
+  namespace: flux-system
+
+spec:
+  interval: 1m
+
+  url: oci://<ACCOUNT_ID>.dkr.ecr.eu-west-2.amazonaws.com/healthsecure-manifests
+
+  ref:
+    tag: latest
