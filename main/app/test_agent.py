@@ -1,9 +1,8 @@
 import requests
 
-API_URL = "http://localhost:5000"
+API_URL = "http://localhost:5000/api"
 QUESTION_URL = f"{API_URL}/question"
 FEEDBACK_URL = f"{API_URL}/feedback"
-
 
 def chat():
     conversation = []

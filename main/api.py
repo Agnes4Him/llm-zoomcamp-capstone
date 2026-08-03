@@ -51,7 +51,7 @@ class FeedbackRequest(BaseModel):
 def startup_event():
     logger.info("HealthSecure AI API started successfully")
 
-@app.get("/healthcheck")
+@app.get("/api/healthcheck")
 def health():
     logger.debug("Healthcheck endpoint called")
 
@@ -59,7 +59,7 @@ def health():
         "status": "ok"
     }
 
-@app.post("/question")
+@app.post("/api/question")
 def chat(request: QuestionRequest):
     logger.info(
         "Received question request. History length: %s",
@@ -138,7 +138,7 @@ def chat(request: QuestionRequest):
             detail="Unable to process request at this time"
         )
 
-@app.post("/feedback")
+@app.post("/api/feedback")
 def save_feedback(feedback: FeedbackRequest):
     logger.info(
         "Received feedback submission. Rating: %s",

@@ -63,7 +63,7 @@ helm install traefik traefik/traefik \
   --namespace traefik \
   --create-namespace \
   --set providers.kubernetesGateway.enabled=true \
-  --set service.type=LoadBalancer
+  --set service.type=NodePort
 
 kubectl get pods -n traefik
 ```
@@ -81,15 +81,50 @@ Create gateway
 kubectl apply -f gateway.yaml
 ```
 
+## Create K8s cluster with kind...
+```bash
+kind create cluster --config kind-config.yaml
+```
+
+## Create K8s cluster with k3s...
+```bash
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik" sh -          # install without default Traefik
+
+sudo kubectl get nodes
+
+# Configure kubectl for your user
+mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
+```
+
+## Setup ExternalSecret Operator
+```bash
+helm repo add external-secrets https://charts.external-secrets.io
+
+helm repo update
+
+helm install external-secrets \
+external-secrets/external-secrets \
+-n external-secrets \
+--create-namespace
+
+kubectl get pods -n external-secrets
+
+kubectl apply -f secret-store.yaml
+```
+
 ## Pending...
 * Run API in docker with postgres and grafana and test
 * add httproute to kubernetes
 * Run all in kind cluster locally
+* CI pipeline configs      **
+* Evaluation/ Monitoring     **
 * Write script to do following...
 - installs docker
-- installs kind
+- installs kind/k3s
 - install helm
-- create kind cluster
+- create kind/k3s cluster
 - install and set up flux
 - set up Traefik controller and Gateway API CRDs
-- setup Grafana
+- set up externalsecret operator
