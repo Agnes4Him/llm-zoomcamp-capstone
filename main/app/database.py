@@ -1,8 +1,9 @@
 import os
 import logging
+from pathlib import Path
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 
 logger = logging.getLogger(__name__)
@@ -35,3 +36,15 @@ try:
 except SQLAlchemyError:
     logger.exception("Failed to create database engine")
     raise
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+def initialize_database():
+    sql_file = BASE_DIR / "scripts" / "init_postgres_db.sql"
+
+    with open(sql_file, "r", encoding="utf-8") as f:
+        sql = f.read()
+
+    with engine.begin() as conn:
+        conn.execute(text(sql))
+

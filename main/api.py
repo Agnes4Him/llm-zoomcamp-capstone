@@ -10,7 +10,9 @@ from sqlalchemy import text
 
 from app.agent import agent
 from app.calculate_cost import calculate_cost
-from app.database import engine
+from app.database import engine, initialize_database
+
+from contextlib import asynccontextmanager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,7 +20,23 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting HealthSecure API")
+
+    try:
+        initialize_database()
+        logger.info("Database initialization completed successfully")
+    except Exception:
+        logger.exception("Database initialization failed")
+        raise
+    yield
+    logger.info("Shutting down HealthSecure API")
+
+
+app = FastAPI(
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,10 +64,6 @@ class FeedbackRequest(BaseModel):
     question: str
     response: str
     rating: str
-
-@app.on_event("startup")
-def startup_event():
-    logger.info("HealthSecure AI API started successfully")
 
 @app.get("/api/healthcheck")
 def health():
