@@ -1,9 +1,11 @@
 import os
+import logging
 
 from dotenv import load_dotenv
-
 from sqlalchemy import create_engine
-from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -16,7 +18,20 @@ DATABASE_URL = (
     f"{os.getenv('POSTGRES_DB')}"
 )
 
-
-engine = create_engine(
-    DATABASE_URL
+logger.info(
+    "Initializing database connection. Host: %s, Database: %s",
+    os.getenv("POSTGRES_HOST"),
+    os.getenv("POSTGRES_DB")
 )
+
+try:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True
+    )
+
+    logger.info("Database engine created successfully")
+
+except SQLAlchemyError:
+    logger.exception("Failed to create database engine")
+    raise

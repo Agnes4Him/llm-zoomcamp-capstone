@@ -4,6 +4,16 @@
 
 DROP TABLE IF EXISTS claims;
 DROP TABLE IF EXISTS members;
+DROP TABLE IF EXISTS feedbacks;
+
+-- Table: feedbacks
+CREATE TABLE feedbacks (
+    id SERIAL PRIMARY KEY,
+    question TEXT NOT NULL,
+    response TEXT NOT NULL,
+    rating VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Table: members
 CREATE TABLE members (

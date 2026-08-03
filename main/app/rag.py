@@ -1,41 +1,45 @@
-import os
+import logging
 
-from dotenv import load_dotenv
-from langchain_pinecone import PineconeVectorStore
-from pinecone import Pinecone
+from app.rag_helper import (
+    create_vectorstore,
+    create_retriever
+)
 
-from langchain_aws import BedrockEmbeddings
+logger = logging.getLogger(__name__)
 
-load_dotenv()
+def retrieve_documents(question):
+    """
+    Retrieve documents from the vectorstore
+    """
 
-pc = Pinecone(
-    api_key=os.getenv(
-        "PINECONE_API_KEY"
+    logger.info(
+        "Starting document retrieval"
     )
-)
 
-index = pc.Index(
-    os.getenv(
-        "PINECONE_INDEX_NAME_BEDROCK"
-    )
-)
+    try:
+        vectorstore = create_vectorstore()
+        retriever = create_retriever(
+            vectorstore
+        )
 
-embeddings = BedrockEmbeddings( 
-    model_id=os.getenv(
-        "BEDROCK_EMBEDDING_MODEL_ID"
-    ),
-    region_name=os.getenv(
-        "AWS_REGION"
-    )
-)
+        docs = retriever.get_relevant_documents(
+            question
+        )
 
-vectorstore = PineconeVectorStore(
-    index=index,
-    embedding=embeddings
-)
+        logger.info(
+            "Retrieved %s relevant documents",
+            len(docs)
+        )
 
-retriever = vectorstore.as_retriever(
-    search_kwargs={
-        "k":3
-    }
-)
+        return docs
+    except Exception:
+        logger.exception(
+            "Failed to retrieve documents"
+        )
+        raise
+
+if __name__ == "__main__":
+    question = "What benefits are included?"
+    docs = retrieve_documents(question)
+    for doc in docs:
+        print(doc.page_content)

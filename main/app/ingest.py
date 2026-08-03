@@ -1,6 +1,4 @@
-import os
-
-from dotenv import load_dotenv
+import logging
 
 from langchain_community.document_loaders import (
     DirectoryLoader,
@@ -11,74 +9,76 @@ from langchain_text_splitters import (
     RecursiveCharacterTextSplitter
 )
 
-from langchain_aws import BedrockEmbeddings
-# from langchain_openai import OpenAIEmbeddings
-
-from langchain_pinecone import PineconeVectorStore
-
-from pinecone import Pinecone
-
-load_dotenv()
-
-loader = DirectoryLoader(
-    "knowledge-base",
-    glob="**/*.txt",
-    loader_cls=TextLoader
+from app.rag_helper import (
+    create_vectorstore
 )
 
-documents = loader.load()
+logger = logging.getLogger(__name__)
 
-print(
-    f"Loaded {len(documents)} documents"
-)
+def load_knowledge_base():
+    """
+    Load the knowledge base into Pinecone
+    """
 
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=800,
-    chunk_overlap=150
-)
+    logger.info("Loading knowledge base documents")
 
+    try:
+        loader = DirectoryLoader(
+            "knowledge-base",
+            glob="**/*.txt",
+            loader_cls=TextLoader
+        )
 
-chunks = splitter.split_documents(
-    documents
-)
+        documents = loader.load()
 
+        logger.info(
+            "Loaded %s documents from knowledge base",
+            len(documents)
+        )
 
-print(
-    f"Created {len(chunks)} chunks"
-)
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=800,
+            chunk_overlap=150
+        )
 
-embeddings = BedrockEmbeddings( 
-    model_id=os.getenv(
-        "BEDROCK_EMBEDDING_MODEL_ID"
-    ),
-    region_name=os.getenv(
-        "AWS_REGION"
-    )
-)
+        chunks = splitter.split_documents(documents)
 
-pc = Pinecone(
-    api_key=os.getenv(
-        "PINECONE_API_KEY"
-    )
-)
+        logger.info(
+            "Created %s document chunks",
+            len(chunks)
+        )
 
-index = pc.Index(
-    os.getenv(
-        "PINECONE_INDEX_NAME_BEDROCK"
-    )
-)
+        return chunks
 
-vectorstore = PineconeVectorStore(
-    index=index,
-    embedding=embeddings
-)
+    except Exception:
+        logger.exception("Failed to load knowledge base")
+        raise
 
+def add_documents_to_vectorstore():
+    """
+    Add documents to the vectorstore
+    """
 
-vectorstore.add_documents(
-    chunks
-)
+    logger.info("Adding documents to vectorstore")
 
+    try:
+        vectorstore = create_vectorstore()
+        chunks = load_knowledge_base()
 
-print(
-    "Knowledge base loaded into Pinecone"
-)
+        vectorstore.add_documents(
+            chunks
+        )
+
+        logger.info(
+            "Successfully added %s documents to vectorstore",
+            len(chunks)
+        )
+
+    except Exception:
+        logger.exception(
+            "Failed to add documents to vectorstore"
+        )
+        raise
+
+if __name__ == "__main__":
+    add_documents_to_vectorstore()

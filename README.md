@@ -30,5 +30,5 @@ healthsecure-ai/
 ├── requirements.txt
 └── main.py
 
-## Using Bedrock API key
-export AWS_BEARER_TOKEN_BEDROCK=<BEDROCK_API_KEY>
+## start fastapi app
+uv run uvicorn api:app --host 0.0.0.0 --port 5000 --reload
