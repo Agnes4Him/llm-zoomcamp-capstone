@@ -25,7 +25,6 @@ resource "aws_instance" "server" {
       flux_repo = file("${path.root}./kubernetes/supporting-services/flux/oci-repository.yaml")
       flux_kustomization = file("${path.root}./kubernetes/supporting-services/flux/kustomization.yaml")
       gateway = file("${path.root}./kubernetes/supporting-services/traefik/gateway.yaml")
-      secret_store = file("${path.root}./kubernetes/supporting-services/externalsecret/secret-store.yaml")
 
       grafana_namespace  = file("${path.root}./kubernetes/supporting-services/grafana/namespace.yaml")
       grafana_deployment = file("${path.root}./kubernetes/supporting-services/grafana/deployment.yaml")

@@ -91,40 +91,29 @@ deployment \
 echo "Creating bootstrap manifests"
 mkdir -p /opt/bootstrap
 
-
 cat <<EOF >/opt/bootstrap/oci-repository.yaml
 ${flux_repo}
 EOF
-
 
 cat <<EOF >/opt/bootstrap/kustomization.yaml
 ${flux_kustomization}
 EOF
 
-
 cat <<EOF >/opt/bootstrap/gateway.yaml
 ${gateway}
-EOF
-
-
-cat <<EOF >/opt/bootstrap/secret-store.yaml
-${secret_store}
 EOF
 
 cat <<EOF >/opt/bootstrap/grafana-namespace.yaml
 ${grafana_namespace}
 EOF
 
-
 cat <<EOF >/opt/bootstrap/grafana-deployment.yaml
 ${grafana_deployment}
 EOF
 
-
 cat <<EOF >/opt/bootstrap/grafana-service.yaml
 ${grafana_service}
 EOF
-
 
 cat <<EOF >/opt/bootstrap/grafana-httproute.yaml
 ${grafana_httproute}
@@ -132,9 +121,6 @@ EOF
 
 echo "Applying Gateway"
 kubectl apply -f /opt/bootstrap/gateway.yaml
-
-echo "Applying SecretStore configuration"
-kubectl apply -f /opt/bootstrap/secret-store.yaml
 
 echo "Applying Flux OCI GitOps"
 kubectl apply -f /opt/bootstrap/oci-repository.yaml

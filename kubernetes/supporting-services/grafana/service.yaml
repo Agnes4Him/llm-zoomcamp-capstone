@@ -3,9 +3,11 @@ kind: Service
 
 metadata:
   name: grafana
+  namespace: monitoring
 
 spec:
   type: ClusterIP
+  namespace: monitoring
 
   selector:
     app: grafana
