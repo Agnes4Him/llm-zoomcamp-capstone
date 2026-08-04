@@ -1,38 +1,52 @@
 module "network" {
   source = "./modules/network"
 
-  project = var.project
+  vpc_cidr_block             = var.vpc_cidr_block
+  public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
+  private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+  availability_zones         = var.availability_zones
 }
 
 module "iam" {
   source = "./modules/iam"
 
-  project = var.project
+  project_name = var.project_name
 }
 
 module "security_group" {
   source = "./modules/security-group"
 
-  vpc_id = module.network.vpc_id
+  project_name = var.project_name
+  vpc_id       = module.network.vpc_id
 }
 
 module "ec2" {
   source = "./modules/ec2"
 
-  subnet_id          = module.network.public_subnet_id
+  role_name         = module.iam.ec2_role_name
+  key_name          = var.key_name
+  ami_id            = var.ami_id
+  instance_type     = var.instance_type
+  subnet_id         = module.network.public_subnet_id
   security_group_id = module.security_group.id
-  iam_instance_profile = module.iam.instance_profile
-
-  project = var.project
+  project_name      = var.project_name
 }
 
 module "rds" {
   source = "./modules/rds"
 
-  vpc_id = module.network.vpc_id
-  subnet_ids = module.network.private_subnet_ids
+  identifier         = var.identifier
+  vpc_id             = module.network.vpc_id
+  private_subnet_ids = module.network.private_subnet_ids
+  security_group_ids = module.rds_security_group.id
+  database_name      = var.database_name
+  username           = var.username
+  password           = var.password
+}
 
-  security_group_id = module.security_group.id
+module "ecr" {
+  source = "./modules/ecr"
 
-  project = var.project
+  api_repository_name      = var.api_repository_name
+  manifest_repository_name = var.manifest_repository_name
 }
