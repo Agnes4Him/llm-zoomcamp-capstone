@@ -17,15 +17,15 @@ resource "aws_instance" "server" {
   user_data = templatefile(
     "${path.module}/user-data.sh.tpl",
     {
-      flux_repo = file("${path.root}/kubernetes/supporting-services/flux/oci-repository.yaml")
-      flux_kustomization = file("${path.root}/kubernetes/supporting-services/flux/kustomization.yaml")
-      gateway = file("${path.root}/kubernetes/supporting-services/traefik/gateway.yaml")
-      secret_store = file("${path.root}/kubernetes/supporting-services/externalsecret/secret-store.yaml")
+      flux_repo = file("${path.root}./kubernetes/supporting-services/flux/oci-repository.yaml")
+      flux_kustomization = file("${path.root}./kubernetes/supporting-services/flux/kustomization.yaml")
+      gateway = file("${path.root}./kubernetes/supporting-services/traefik/gateway.yaml")
+      secret_store = file("${path.root}./kubernetes/supporting-services/externalsecret/secret-store.yaml")
 
-      grafana_namespace  = file("${path.root}/kubernetes/supporting-services/grafana/namespace.yaml")
-      grafana_deployment = file("${path.root}/kubernetes/supporting-services/grafana/deployment.yaml")
-      grafana_service    = file("${path.root}/kubernetes/supporting-services/grafana/service.yaml")
-      grafana_httproute  = file("${path.root}/kubernetes/supporting-services/grafana/httproute.yaml")
+      grafana_namespace  = file("${path.root}./kubernetes/supporting-services/grafana/namespace.yaml")
+      grafana_deployment = file("${path.root}./kubernetes/supporting-services/grafana/deployment.yaml")
+      grafana_service    = file("${path.root}./kubernetes/supporting-services/grafana/service.yaml")
+      grafana_httproute  = file("${path.root}./kubernetes/supporting-services/grafana/httproute.yaml")
     }
   )
 

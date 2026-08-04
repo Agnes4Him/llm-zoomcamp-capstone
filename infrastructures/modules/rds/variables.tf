@@ -32,7 +32,7 @@ variable "instance_class" {
 }
 
 variable "private_subnet_ids" {
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
   description = "description"
 }

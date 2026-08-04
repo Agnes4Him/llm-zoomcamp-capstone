@@ -28,7 +28,7 @@ module "ec2" {
   ami_id            = var.ami_id
   instance_type     = var.instance_type
   subnet_id         = module.network.public_subnet_id
-  security_group_id = module.security_group.id
+  security_group_id = module.security_group.ec2_security_group_id
   project_name      = var.project_name
 }
 
@@ -38,7 +38,7 @@ module "rds" {
   identifier         = var.identifier
   vpc_id             = module.network.vpc_id
   private_subnet_ids = module.network.private_subnet_ids
-  security_group_ids = module.rds_security_group.id
+  security_group_ids = [module.security_group.rds_security_group_id]
   database_name      = var.database_name
   username           = var.username
   password           = var.password
