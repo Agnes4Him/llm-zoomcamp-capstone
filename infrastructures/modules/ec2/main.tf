@@ -3,6 +3,11 @@ resource "aws_iam_instance_profile" "ec2" {
   role = var.role_name
 }
 
+resource "aws_key_pair" "healthsecure" {
+  key_name   = "llm-project-key"
+  public_key = file(var.public_key_path)
+}
+
 resource "aws_instance" "server" {
   ami = var.ami_id
   instance_type = var.instance_type
@@ -11,7 +16,7 @@ resource "aws_instance" "server" {
     var.security_group_id
   ]
 
-  key_name = var.key_name
+  key_name = aws_key_pair.healthsecure.key_name
   iam_instance_profile = aws_iam_instance_profile.ec2.name
 
   user_data = templatefile(

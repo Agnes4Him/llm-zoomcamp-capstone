@@ -12,7 +12,7 @@ variable "project_name" {
 
 variable "ami_id" {
   type        = string
-  default     = "ami-0c55b159cbfafe1f0"
+  default     = "ami-07f936ee1f9a0de0e"
   description = "The AMI ID for the EC2 instance"
 }
 
@@ -22,10 +22,9 @@ variable "instance_type" {
   description = "The instance type for the EC2 instance"
 }
 
-variable "key_name" {
-  type        = string
-  default     = "llm-project"
-  description = "The key pair name for the EC2 instance"
+variable "public_key_path" {
+  type    = string
+  default = "C:/Users/m/Documents/personal/projects/keys/llm-project.pub"
 }
 
 variable "vpc_cidr_block" {

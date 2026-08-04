@@ -10,15 +10,10 @@ echo "Updating system"
 apt-get update -y
 apt-get upgrade -y
 
-apt-get install -y awscli
-
 echo "Installing Docker"
-
 apt-get install -y docker.io
-
 systemctl enable docker
 systemctl start docker
-
 usermod -aG docker ubuntu
 
 echo "Installing k3s"
@@ -27,13 +22,17 @@ systemctl enable k3s
 
 
 echo "Waiting for k3s"
-until kubectl get nodes >/dev/null 2>&1
+for i in {1..60}
 do
+  if kubectl get nodes >/dev/null 2>&1
+  then
+    break
+  fi
+
   sleep 5
 done
 
 echo "Waiting for node to become Ready"
-
 until kubectl get nodes | grep -q " Ready"
 do
   sleep 5
@@ -41,12 +40,12 @@ done
 
 mkdir -p /home/ubuntu/.kube
 cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
+echo "export KUBECONFIG=/home/ubuntu/.kube/config" >> /home/ubuntu/.bashrc
 chown -R ubuntu:ubuntu /home/ubuntu/.kube
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+export KUBECONFIG=/home/ubuntu/.kube/config
 
 echo "Installing Helm"
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
 
 echo "Installing Gateway API CRDs"
 kubectl apply -f \
