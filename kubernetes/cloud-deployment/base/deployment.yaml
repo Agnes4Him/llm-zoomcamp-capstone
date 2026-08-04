@@ -20,7 +20,7 @@ spec:
       containers:
         - name: healthsecure-api
 
-          image: your-registry/healthsecure-api:latest
+          image: agnes4im/llm-project-api:1.0.0
 
           ports:
             - containerPort: 5000

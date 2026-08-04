@@ -83,7 +83,9 @@ kubectl apply -f gateway.yaml
 
 ## Create K8s cluster with kind...
 ```bash
-kind create cluster --config kind-config.yaml
+kind create cluster \
+--name llm-project \
+--config kubernetes/supporting-services/kind/kind-config.yaml          # from root
 ```
 
 ## Create K8s cluster with k3s...
