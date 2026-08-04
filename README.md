@@ -117,16 +117,8 @@ kubectl apply -f secret-store.yaml
 ```
 
 ## Pending...
-* Run API in docker with postgres and grafana and test
-* add httproute to kubernetes
-* Run all in kind cluster locally
-* CI pipeline configs      **
-* Evaluation/ Monitoring     **
-* Write script to do following...
-- installs docker
-- installs kind/k3s
-- install helm
-- create kind/k3s cluster
-- install and set up flux
-- set up Traefik controller and Gateway API CRDs
-- set up externalsecret operator
+* Evaluation/ Monitoring 
+* Run through EC2 user_data script and edit/adjust
+* Edit Tf files and test
+* test tf with pipeline
+* Document

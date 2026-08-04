@@ -11,4 +11,4 @@ spec:
   url: oci://<ACCOUNT_ID>.dkr.ecr.eu-west-2.amazonaws.com/healthsecure-manifests
 
   ref:
-    tag: latest
+    tag: staging

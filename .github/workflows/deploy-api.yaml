@@ -2,6 +2,9 @@ name: Build and Publish OCI Artifacts
 
 on:
   workflow_dispatch:
+  # push:
+    # branches:
+      # - main
 
 env:
   AWS_REGION: eu-west-2
@@ -13,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
       contents: read
 
     steps:
@@ -23,30 +25,46 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and push image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push API image
         env:
           IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker build \
             -t $ECR_REPOSITORY:$IMAGE_TAG .
 
           docker tag \
             $ECR_REPOSITORY:$IMAGE_TAG \
-            ${{ secrets.ECR_REGISTRY }}/$ECR_REPOSITORY:$IMAGE_TAG
+            $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           docker push \
-            ${{ secrets.ECR_REGISTRY }}/$ECR_REPOSITORY:$IMAGE_TAG
+            $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Install kustomize
         run: |
           curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
           sudo mv kustomize /usr/local/bin/
+
+      - name: Update image tag in manifests
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          cd kubernetes/cloud-deployment/overlays/staging
+
+          kustomize edit set image \
+          healthsecure-api=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Render manifests
         run: |
@@ -58,8 +76,18 @@ jobs:
           tar -xzf oras_linux_amd64.tar.gz
           sudo mv oras /usr/local/bin/
 
-      - name: Push manifests OCI artifact
+      - name: Push manifest OCI artifact (SHA tag)
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           oras push \
-          ${{ secrets.ECR_REGISTRY }}/$MANIFEST_REPOSITORY:${{ github.sha }} \
+          $REGISTRY/$MANIFEST_REPOSITORY:${{ github.sha }} \
           manifests.yaml:application/vnd.cncf.kubernetes.manifest.v1+yaml
+
+      - name: Push manifest OCI artifact (staging tag)
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          oras tag \
+          $REGISTRY/$MANIFEST_REPOSITORY:${{ github.sha }} \
+          staging
