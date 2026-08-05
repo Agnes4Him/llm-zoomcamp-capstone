@@ -7,8 +7,7 @@ metadata:
 
 spec:
   interval: 1m
-
   url: oci://${account_id}.dkr.ecr.${region}.amazonaws.com/healthsecure-manifests
-
+  provider: aws
   ref:
     tag: staging
