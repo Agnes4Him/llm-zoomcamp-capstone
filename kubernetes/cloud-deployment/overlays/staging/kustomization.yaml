@@ -8,4 +8,4 @@ resources:
   - namespace.yaml
 
 patches:
-  - path: deployment-patch.yaml
+  - path: patch-deployment.yaml
