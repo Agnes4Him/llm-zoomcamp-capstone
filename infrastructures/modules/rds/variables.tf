@@ -1,5 +1,5 @@
 variable "identifier" {
-  type = string
+  type    = string
   default = "healthsecure-postgres"
 }
 
@@ -12,12 +12,12 @@ variable "security_group_ids" {
 }
 
 variable "database_name" {
-  type = string
+  type    = string
   default = "healthsecure"
 }
 
 variable "username" {
-  type = string
+  type    = string
   default = "healthsecure_admin"
 }
 
@@ -27,7 +27,7 @@ variable "password" {
 }
 
 variable "instance_class" {
-  type = string
+  type    = string
   default = "db.t3.micro"
 }
 

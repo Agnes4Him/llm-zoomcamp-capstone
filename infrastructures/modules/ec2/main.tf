@@ -11,14 +11,14 @@ resource "aws_key_pair" "healthsecure" {
 }
 
 resource "aws_instance" "server" {
-  ami = var.ami_id
+  ami           = var.ami_id
   instance_type = var.instance_type
-  subnet_id = var.subnet_id
+  subnet_id     = var.subnet_id
   vpc_security_group_ids = [
     var.security_group_id
   ]
 
-  key_name = aws_key_pair.healthsecure.key_name
+  key_name             = aws_key_pair.healthsecure.key_name
   iam_instance_profile = aws_iam_instance_profile.ec2.name
 
   root_block_device {
@@ -40,7 +40,7 @@ resource "aws_instance" "server" {
       )
 
       flux_kustomization = file("${path.root}./kubernetes/supporting-services/flux/kustomization.yaml")
-      gateway = file("${path.root}./kubernetes/supporting-services/traefik/gateway.yaml")
+      gateway            = file("${path.root}./kubernetes/supporting-services/traefik/gateway.yaml")
 
       grafana_namespace  = file("${path.root}./kubernetes/supporting-services/grafana/namespace.yaml")
       grafana_deployment = file("${path.root}./kubernetes/supporting-services/grafana/deployment.yaml")

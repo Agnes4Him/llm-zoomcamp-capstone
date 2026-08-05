@@ -7,17 +7,17 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = var.public_subnet_cidr_blocks[0]
-  availability_zone = var.availability_zones[0]
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_cidr_blocks[0]
+  availability_zone       = var.availability_zones[0]
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "private" {
-  count = 2
+  count  = 2
   vpc_id = aws_vpc.main.id
 
-  cidr_block = var.private_subnet_cidr_blocks[count.index]
+  cidr_block        = var.private_subnet_cidr_blocks[count.index]
   availability_zone = var.availability_zones[count.index]
 
   tags = {
@@ -44,7 +44,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  subnet_id = aws_subnet.public.id
+  subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
 }
 
@@ -57,7 +57,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "private" {
-  count = 2
-  subnet_id = aws_subnet.private[count.index].id
+  count          = 2
+  subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
