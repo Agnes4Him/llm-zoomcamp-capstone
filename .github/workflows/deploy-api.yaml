@@ -1,16 +1,13 @@
 name: Build and Publish OCI Artifacts
-
 on:
   workflow_dispatch:
   # push:
     # branches:
       # - main
-
 env:
   AWS_REGION: eu-west-2
   ECR_REPOSITORY: healthsecure-api
   MANIFEST_REPOSITORY: healthsecure-manifests
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,7 +39,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker build \
-            -t $ECR_REPOSITORY:$IMAGE_TAG .
+            -t $ECR_REPOSITORY:$IMAGE_TAG ./main
 
           docker tag \
             $ECR_REPOSITORY:$IMAGE_TAG \
@@ -68,7 +65,7 @@ jobs:
 
       - name: Render manifests
         run: |
-          kustomize build kubernetes/overlays/staging > manifests.yaml
+          kustomize build kubernetes/cloud-deployment/overlays/staging > manifests.yaml
 
       - name: Install ORAS
         run: |
