@@ -6,7 +6,7 @@ on:
     # branches:
       # - main
      paths:
-      - "infrastructure/**"
+      - "infrastructures/**"
 
 jobs:
   terraform:
