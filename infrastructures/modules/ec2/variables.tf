@@ -31,7 +31,7 @@ variable "security_group_id" {
   description = "The security group ID for the EC2 instance"
 }
 
-variable "public_key_path" {
+variable "public_key" {
   type = string
 }
 

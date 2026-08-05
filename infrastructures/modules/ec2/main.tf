@@ -7,7 +7,7 @@ resource "aws_iam_instance_profile" "ec2" {
 
 resource "aws_key_pair" "healthsecure" {
   key_name   = "llm-project-key"
-  public_key = file(var.public_key_path)
+  public_key = var.public_key
 }
 
 resource "aws_instance" "server" {

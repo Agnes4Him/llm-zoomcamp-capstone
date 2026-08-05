@@ -22,7 +22,7 @@ variable "instance_type" {
   description = "The instance type for the EC2 instance"
 }
 
-variable "public_key_path" {
+variable "public_key" {
   type    = string
   default = "C:/Users/m/Documents/personal/projects/keys/llm-project.pub"
 }

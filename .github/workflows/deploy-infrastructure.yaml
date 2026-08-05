@@ -46,10 +46,12 @@ jobs:
       - name: Terraform Plan
         env:
           TF_VAR_password: ${{ secrets.TF_VAR_PASSWORD }}
+          TF_VAR_public_key: ${{ secrets.TF_VAR_PUBLIC_KEY }}
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         env:
           TF_VAR_password: ${{ secrets.TF_VAR_PASSWORD }}
+          TF_VAR_public_key: ${{ secrets.TF_VAR_PUBLIC_KEY }}
         run: terraform apply -auto-approve tfplan
