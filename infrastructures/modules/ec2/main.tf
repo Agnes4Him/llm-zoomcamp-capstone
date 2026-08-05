@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_instance_profile" "ec2" {
   name = "${var.project_name}-ec2-instance-profile"
   role = var.role_name
@@ -29,7 +31,14 @@ resource "aws_instance" "server" {
   user_data = templatefile(
     "${path.module}/user-data.sh.tpl",
     {
-      flux_repo = file("${path.root}./kubernetes/supporting-services/flux/oci-repository.yaml")
+      flux_repo = templatefile(
+        "${path.root}./kubernetes/supporting-services/flux/oci-repository.yaml",
+        {
+          account_id = data.aws_caller_identity.current.account_id
+          region     = var.aws_region
+        }
+      )
+
       flux_kustomization = file("${path.root}./kubernetes/supporting-services/flux/kustomization.yaml")
       gateway = file("${path.root}./kubernetes/supporting-services/traefik/gateway.yaml")
 
