@@ -24,7 +24,7 @@ module "ec2" {
   source = "./modules/ec2"
 
   role_name         = module.iam.ec2_role_name
-  public_key_path   = var.public_key_path
+  public_key        = var.public_key
   ami_id            = var.ami_id
   instance_type     = var.instance_type
   subnet_id         = module.network.public_subnet_id
