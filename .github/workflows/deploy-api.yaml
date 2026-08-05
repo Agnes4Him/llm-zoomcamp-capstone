@@ -68,10 +68,11 @@ jobs:
           kustomize build kubernetes/cloud-deployment/overlays/staging > manifests.yaml
 
       - name: Install ORAS
+        uses: oras-project/setup-oras@v1
+
+      - name: Check ORAS
         run: |
-          curl -LO https://github.com/oras-project/oras/releases/latest/download/oras_linux_amd64.tar.gz
-          tar -xzf oras_linux_amd64.tar.gz
-          sudo mv oras /usr/local/bin/
+          oras version
 
       - name: Push manifest OCI artifact (SHA tag)
         env:
