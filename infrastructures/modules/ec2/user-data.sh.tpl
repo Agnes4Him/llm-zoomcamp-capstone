@@ -60,6 +60,9 @@ helm upgrade --install traefik traefik/traefik \
 --namespace traefik \
 --create-namespace \
 --set providers.kubernetesGateway.enabled=true
+--set hostNetwork=true \
+--set ports.web.hostPort=80 \
+--set ports.websecure.hostPort=443
 
 kubectl rollout status deployment/traefik \
 -n traefik \
