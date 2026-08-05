@@ -7,7 +7,6 @@ metadata:
 
 spec:
   type: ClusterIP
-  namespace: monitoring
 
   selector:
     app: grafana
