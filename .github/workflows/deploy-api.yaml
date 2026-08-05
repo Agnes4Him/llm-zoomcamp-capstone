@@ -75,6 +75,7 @@ jobs:
           flux push artifact \
             oci://$REGISTRY/$MANIFEST_REPOSITORY:$IMAGE_TAG \
             --source=./kubernetes/cloud-deployment/overlays/staging
+            --revision=$IMAGE_TAG
 
       - name: Tag artifact as staging
         env:
