@@ -12,7 +12,7 @@ terraform {
     bucket       = "healthsecure-terraform-state"
     key          = "healthsecure/terraform.tfstate"
     region       = "eu-west-2"
-    use_lockfile = "healthsecure-terraform-lock"
+    use_lockfile = true
     encrypt      = true
   }
 }
