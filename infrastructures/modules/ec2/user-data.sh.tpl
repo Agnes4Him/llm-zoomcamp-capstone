@@ -38,6 +38,20 @@ do
   sleep 5
 done
 
+echo "Installing AWS CLI"
+apt-get install -y awscli
+
+echo "Creating api namespace"
+kubectl create namespace api --dry-run=client -o yaml | kubectl apply -f -
+
+echo "Creating ECR pull secret"
+kubectl create secret docker-registry ecr-secret \
+--docker-server=759907441676.dkr.ecr.eu-west-2.amazonaws.com \
+--docker-username=AWS \
+--docker-password=$(aws ecr get-login-password --region eu-west-2) \
+-n api \
+--dry-run=client -o yaml | kubectl apply -f -
+
 mkdir -p /home/ubuntu/.kube
 cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
 echo "export KUBECONFIG=/home/ubuntu/.kube/config" >> /home/ubuntu/.bashrc
