@@ -7,5 +7,7 @@ resources:
   - ../../base
   - namespace.yaml
 
-patches:
-  - path: patch-deployment.yaml
+images:
+  - name: healthsecure-api
+    newName: healthsecure-api
+    newTag: latest
