@@ -59,7 +59,7 @@ helm repo update
 helm upgrade --install traefik traefik/traefik \
 --namespace traefik \
 --create-namespace \
---set providers.kubernetesGateway.enabled=true
+--set providers.kubernetesGateway.enabled=true \
 --set hostNetwork=true \
 --set ports.web.hostPort=80 \
 --set ports.websecure.hostPort=443
@@ -84,6 +84,7 @@ kubectl rollout status deployment/external-secrets \
 echo "Installing Flux"
 curl -s https://fluxcd.io/install.sh | bash
 flux install
+
 kubectl wait \
 --for=condition=Available \
 deployment \
