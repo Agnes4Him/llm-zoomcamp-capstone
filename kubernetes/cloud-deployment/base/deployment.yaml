@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: healthsecure-api
-          image: my-registry/healthsecure-api:latest
+          image: healthsecure-api:latest
           ports:
             - containerPort: 5000
           envFrom:
