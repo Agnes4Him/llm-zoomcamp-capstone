@@ -17,6 +17,8 @@ spec:
         app: healthsecure-api
 
     spec:
+      imagePullSecrets:
+        - name: ecr-secret
       containers:
         - name: healthsecure-api
           image: healthsecure-api:latest
