@@ -5,23 +5,6 @@
 DROP TABLE IF EXISTS claims;
 DROP TABLE IF EXISTS members;
 DROP TABLE IF EXISTS feedbacks;
-DROP TABLE IF EXIST conversations
-
-CREATE TABLE conversations (
-    id SERIAL PRIMARY KEY,
-    question TEXT NOT NULL,
-    answer TEXT NOT NULL,
-    model TEXT NOT NULL,
-    instructions TEXT NOT NULL,
-    prompt TEXT NOT NULL,
-    prompt_tokens INTEGER NOT NULL,
-    completion_tokens INTEGER NOT NULL,
-    total_tokens INTEGER NOT NULL,
-    response_time DOUBLE PRECISION NOT NULL,
-    cost DOUBLE PRECISION NOT NULL,
-    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()
-
-);
 
 -- Table: feedbacks
 CREATE TABLE feedbacks (
@@ -30,18 +13,6 @@ CREATE TABLE feedbacks (
     response TEXT NOT NULL,
     rating VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE feedbacks2 (
-    id SERIAL PRIMARY KEY,
-    conversation_id INTEGER NOT NULL
-        REFERENCES conversations(id)
-        ON DELETE CASCADE,
-    source TEXT NOT NULL,
-    relevance TEXT,
-    explanation TEXT,
-    score INTEGER,
-    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Table: members
